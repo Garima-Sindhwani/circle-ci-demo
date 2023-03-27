@@ -28,6 +28,11 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - cmd-print-env-var
+      - run: exit 1
+      - run: 
+          command: "echo hello error"
+          when: on_fail
+
   save-hello-world-output:
     docker:
       - image: circleci/node:13.8.0
