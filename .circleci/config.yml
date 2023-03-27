@@ -25,6 +25,26 @@ jobs:
       - run:
           name: "Print Env Var"
           command: "echo $env_var_name"
+  save-hello-world-output:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: "Save output to file"
+          command: "echo Hello World > ~/Output.txt"
+      - persist-to-workspace:
+          root: ~/
+          paths:
+            - Output.txt
+   print-output-file:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach-workspace:
+          at: ~/
+      - run:
+        command: "cat ~/Output.txt"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -35,3 +55,8 @@ workflows:
       - print-env-var:
           requires:
             - say-hello
+      - save-hello-world-output
+      - print-output-file:
+          requires:
+            - save-hello-world-output
+      
