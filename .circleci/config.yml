@@ -2,6 +2,12 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+commands:
+  cmd-print-env-var:
+    steps:
+      - run: echo ${env_var_name}
+
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -21,10 +27,7 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - run:
-          name: "Print Env Var"
-          command: "echo $env_var_name"
+      - cmd-print-env-var
   save-hello-world-output:
     docker:
       - image: circleci/node:13.8.0
